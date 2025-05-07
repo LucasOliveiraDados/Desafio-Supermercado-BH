@@ -5,6 +5,7 @@ from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
 from num2words import num2words
 import os
+from reportlab.lib import colors
 
 planilha = r"C:\Users\lucas\OneDrive\Área de Trabalho\python\Desafio BH\TESTE_ VAGA.xlsx"
 pdfs_colaboradores = r"C:\Users\lucas\OneDrive\Área de Trabalho\python\Desafio BH\pdfs_colaboradores"
@@ -46,8 +47,14 @@ def gerar_pdf(linha):
     caminho_arquivo = os.path.join(pdfs_colaboradores, nome_arquivo)
 
     c = canvas.Canvas(caminho_arquivo, pagesize=A4)
-    c.setFont("Helvetica", 12)
-    y = 800
+    width, height = A4
+
+    margem = 20  
+    c.setStrokeColor(colors.black)
+    c.setLineWidth(1)
+    c.rect(margem, margem, width - 2 * margem, height - 2 * margem)
+    c.setFont("Helvetica", 10)
+    y = height - 40 
 
     texto = f"""
 Sr(a) Gerente, está autorizado ao(à) colaborador(a) {nome} matrícula: {matricula},
@@ -69,7 +76,7 @@ Assinatura Colaborador: _________________________________________
 Data: ______/____________/__________
 """
     for linha_texto in texto.strip().split("\n"):
-        c.drawString(50, y, linha_texto.strip())
+        c.drawString(80, y, linha_texto.strip())
         y -= 20
 
     c.save()
